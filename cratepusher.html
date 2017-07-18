@@ -1,0 +1,121 @@
+<style>
+body{padding:0;margin:0;font-size:0;}
+.square{
+	height: 49px;
+	width: 49px;
+	background-color: #777;
+	border: solid 1px;
+	border-bottom: 0px;
+	border-right: 0px;
+	display: inline-block;
+	position: relative;
+}
+.cratePusher{background-color:#d55}
+.crate{background-color:#c72}
+.wall{background-color:#ddd}
+#queen{
+	border:solid 1px;
+	border-top:0px;
+	border-left:0px;
+
+}
+#txt1{
+	font-size:16px;
+	display: inline-block;
+}
+</style>
+<head>
+<link rel="stylesheet" href="topmenu.css">
+</head>
+<div id='topMenuQueen'><div id='topMenuWrap'></div></div>
+<div id='plaza'>
+<div id='txt1'>Push all the crates to the top left. You can move more than 1 space at a time in a straight line.</div>
+<div id="queen"></div>
+</div>
+<script src="fader.js"></script>
+<script>
+var gridValues=[
+	[2,2,2,2,2,2,2,2,2,2,2,2],
+	[2,0,0,0,0,2,2,2,2,0,2,2],
+	[2,0,0,0,0,2,2,2,0,0,0,2],
+	[2,0,0,0,0,0,0,0,1,1,0,2],
+	[2,0,0,0,0,2,0,2,0,1,0,2],
+	[2,0,0,2,2,2,0,2,0,1,0,2],
+	[2,2,2,2,0,1,0,2,1,0,0,2],
+	[2,2,2,2,0,0,1,2,0,1,0,2],
+	[2,2,2,2,0,1,0,0,1,0,0,2],
+	[2,2,2,2,0,0,2,2,0,0,0,2],
+	[2,2,2,2,2,2,2,2,2,2,2,2]
+]
+var queenText=""
+for (y=0;y<11;y++){
+	queenText+='<div id="row">'
+	for(x=0;x<12;x++){
+		queenText+='<div class="square'
+		if(gridValues[y][x]===2){queenText+=' wall'}
+		if(gridValues[y][x]===1){queenText+=' crate'}
+		queenText+='" onclick="click1('+y+','+x+')" id="square'+y+'n'+x+'"></div>'
+	}
+	queenText+='</div>'
+}
+document.getElementById("queen").innerHTML = queenText
+
+document.getElementById("square1n9").classList.add("cratePusher")
+var coordP=[1,9]
+
+function moveCrateP(y,x){
+	document.getElementById("square"+coordP[0]+"n"+coordP[1]).classList.remove("cratePusher")
+	document.getElementById("square"+y+"n"+x).classList.add("cratePusher")
+	coordP=[y,x]
+}
+
+function click1(y,x){
+	if(
+		((x===coordP[1]-1||x===coordP[1]+1)&&y===coordP[0])||
+		((y===coordP[0]-1||y===coordP[0]+1)&&x===coordP[1])
+	){
+		if(gridValues[y][x]===0){
+			moveCrateP(y,x)
+		}
+		else if(
+			gridValues[y][x]===1&&
+			gridValues[2*y-coordP[0]][2*x-coordP[1]]===0
+		){
+			var xx=2*x-coordP[1]
+			var yy=2*y-coordP[0]
+			document.getElementById("square"+y+"n"+x).classList.remove("crate")
+			document.getElementById("square"+yy+"n"+xx).classList.add("crate")
+			gridValues[y][x]=0
+			gridValues[yy][xx]=1
+			moveCrateP(y,x)
+		}
+	}
+	else if(y===coordP[0]||x===coordP[1]){
+		var cancelSwitch=0
+		if(x<coordP[1]){
+			for(z=x;z<coordP[1];z++){
+				if(gridValues[y][z]!==0){cancelSwitch=1;break}
+			}
+		}
+		else if(x>coordP[1]){
+			for(z=coordP[1];z<=x;z++){
+				if(gridValues[y][z]!==0){cancelSwitch=1;break}
+			}
+		}
+		else if(y<coordP[0]){
+			for(z=y;z<coordP[0];z++){
+				if(gridValues[z][x]!==0){cancelSwitch=1;break}
+			}
+		}
+		else if(y>coordP[0]){
+			for(z=coordP[0];z<=y;z++){
+				if(gridValues[z][x]!==0){cancelSwitch=1;break}
+			}
+		}
+		if(cancelSwitch===0){moveCrateP(y,x)}
+	}
+}
+
+
+
+</script>

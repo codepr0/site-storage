@@ -1,0 +1,43 @@
+<head>
+<link rel="stylesheet" href="topmenu.css">
+</head>
+<div id='topMenuQueen'><div id='topMenuWrap'></div></div>
+<div id='plaza'>
+<input type="text" id="input1" value="2000000">
+<button onclick="function1()">GO</button><button onclick="showPrimes()">Show Primes</button><button onclick="reset1()">Reset</button>
+<div id="sumOP">sum of primes up to 2000000, wait a second</div>
+<div style="width:100%;height:100%;word-wrap:break-word;overflow:scroll;background-color:#ccc" id="primes"></div>
+</div>
+<script src="fader.js"></script>
+<script>
+var p=[2]
+function function1(){
+	reset1()
+	var n = document.getElementById("input1").value
+	if(n<=2000000){
+		for (x=3;x<=n;x+=2){
+			var t=Math.floor(Math.sqrt(x))
+			for (y=0;y<p.length;y++){
+				if(x%p[y]===0){break}
+				if(p[y]>t){
+					p.push(x)
+					break
+		}	}	}
+		var sum=0
+		for (z=0;z<p.length;z++){sum+=p[z]}
+		document.getElementById("sumOP").innerHTML="sum of primes="+sum
+	}
+	else{
+		document.getElementById("primes").innerHTML="Has to be less than 2000000."
+	}
+}
+function reset1(){
+	p=[2]
+	m=0
+	document.getElementById("sumOP").innerHTML="sum of primes="
+	document.getElementById("primes").innerHTML=""
+}
+function showPrimes(){
+	document.getElementById("primes").innerHTML=p
+}
+</script>

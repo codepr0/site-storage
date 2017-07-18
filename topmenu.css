@@ -1,0 +1,35 @@
+body{
+	padding:0;
+	margin:0;
+	text-align: center;
+}
+#topMenuQueen{
+	font: 0px;
+	right:0;
+	left:0;
+	overflow: auto;
+	position:fixed;
+	top:-1px;
+}
+#topMenuWrap{
+	white-space:nowrap;
+	display: inline-block;
+}
+.tMBBackground{
+	display: inline-block;
+	background: linear-gradient(to top right, #e0e8e8, #e8f0f0, #e0e8e8, #e8f0f0);
+	margin-top:1px;
+}
+.topMenuBox{
+	width:120px;
+	display: inline-block;
+	font-size: 14px;
+	font-family: Tahoma;
+	border:solid 1px;
+	margin-left:-1px;
+	cursor:default;
+}
+#plaza{
+	top:40px;
+	position:relative;
+}

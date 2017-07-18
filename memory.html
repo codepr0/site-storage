@@ -1,0 +1,74 @@
+<style>
+.dv{
+	height: 80px;
+	width: 80px;
+	display: inline-block;
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+.crd{background-image:url(images/crd.png)}
+.cak{background-image:url("http://i.imgur.com/pP6WA.png")}
+.ccc{background-image:url("http://i.imgur.com/MzYiTrS.jpg")}
+.chr{background-image:url("http://i.imgur.com/7pkvkkQ.jpg")}
+.cln{background-image:url(images/cln.png)}
+.frg{background-image:url(images/frg.png)}
+.msh{background-image:url("http://i.imgur.com/VKqJSru.jpg")}
+.mth{background-image:url("http://i.imgur.com/vKNQCbc.jpg")}
+.rok{background-image:url("http://i.imgur.com/B0I6afn.jpg")}
+.smg{background-image:url("http://i.imgur.com/Vv6TLv5.jpg")}
+.tbl{background-image:url("https://i.redd.it/wejiot4mjl5z.jpg")}
+</style>
+<head>
+<link rel="stylesheet" href="topmenu.css">
+</head>
+<div id='topMenuQueen'><div id='topMenuWrap'></div></div>
+<div id='plaza'>
+<div id="c0" class="dv crd" onclick="ck('0')"></div><div id="c1" class="dv crd" onclick="ck('1')"></div><div
+id="c2" class="dv crd" onclick="ck('2')"></div><div id="c3" class="dv crd" onclick="ck('3')"></div><br>
+<div id="c4" class="dv crd" onclick="ck('4')"></div><div id="c5" class="dv crd" onclick="ck('5')"></div><div
+id="c6" class="dv crd" onclick="ck('6')"></div><div id="c7" class="dv crd" onclick="ck('7')"></div><br>
+<div id="c8" class="dv crd" onclick="ck('8')"></div><div id="c9" class="dv crd" onclick="ck('9')"></div><div
+id="c10" class="dv crd" onclick="ck('10')"></div><div id="c11" class="dv crd" onclick="ck('11')"></div><br>
+<div id="c12" class="dv crd" onclick="ck('12')"></div><div id="c13" class="dv crd" onclick="ck('13')"></div><div
+id="c14" class="dv crd" onclick="ck('14')"></div><div id="c15" class="dv crd" onclick="ck('15')"></div><br>
+<div id="c16" class="dv crd" onclick="ck('16')"></div><div id="c17" class="dv crd" onclick="ck('17')"></div><div
+id="c18" class="dv crd" onclick="ck('18')"></div><div id="c19" class="dv crd" onclick="ck('19')"></div><br>
+</div>
+<script src="fader.js"></script>
+<script>
+var cardsUnshuffled = ["cak","cak","ccc","ccc","chr","chr","cln","cln","frg","frg","msh","msh","mth","mth","rok","rok","smg","smg","tbl","tbl"]
+var cardsShuffled = []
+for(u=0;u<20;u++){
+	var rN=Math.floor(Math.random()*cardsUnshuffled.length)
+	cardsShuffled.push(cardsUnshuffled[rN])
+	cardsUnshuffled.splice(rN,1)
+}
+var cardFlipped=-1
+var cardFlipped2=-1
+var loseSwitch=0
+function ck(v){
+	if(v!=cardFlipped&&loseSwitch===0&&isFinite(v)){
+		document.getElementById("c"+v).className="dv "+cardsShuffled[v]
+		if(cardFlipped===-1){
+			cardFlipped=v
+		}
+		else if(cardsShuffled[v]===cardsShuffled[cardFlipped]){
+			document.getElementById("c"+v).onclick = function(){ck("")};
+			document.getElementById("c"+cardFlipped).onclick = function (){ck("")};
+			cardFlipped=-1
+		}
+		else{
+			loseSwitch=1
+			cardFlipped2=v
+		}
+	}
+	else if(loseSwitch===1){
+		document.getElementById("c"+cardFlipped).className="dv crd"
+		document.getElementById("c"+cardFlipped2).className="dv crd"
+		cardFlipped=-1
+		cardFlipped2=-1
+		loseSwitch=0
+	}
+}
+</script>

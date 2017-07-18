@@ -1,0 +1,32 @@
+<head>
+<link rel="stylesheet" href="topmenu.css">
+</head>
+<div id='topMenuQueen'><div id='topMenuWrap'></div></div>
+<div id='plaza'>
+<p>(x-2)(x-1) = x^2 - 3x + 2</p>
+<p>0 = ax^2 + bx + c</p>
+<p>x = [ -b + or - (b^2-4ac)^0.5 ] / 2a</p>
+<p>a<input type="text" id="textboxa" value="1"></p>
+<p>b<input type="text" id="textboxb" value="-3"></p>
+<p>c<input type="text" id="textboxc" value="2"></p>
+<p><button onclick="function1()">OK</button></p>
+<p id="text1">x =</p>
+</div>
+<script src="fader.js"></script>
+<script>
+function function1(){
+	var a = document.getElementById("textboxa").value
+	var b = document.getElementById("textboxb").value
+	var c = document.getElementById("textboxc").value
+	var txt=""
+	if(b*b>=4*a*c){
+		var q1 = Math.sqrt( (b * b) - (4 * a * c) )
+		var x1 = [ (0-b) + q1 ] / (2 * a);
+		var x2 = [ (0-b) - q1 ] / (2 * a);
+		if (x1===x2){txt = "x = "+x1}
+		else{txt = "x = "+x1+" or "+x2;}
+	}
+	else{txt = 'no solution, b^2 < 4ac'}
+	document.getElementById("text1").innerHTML = txt
+}
+</script>

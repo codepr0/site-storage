@@ -1,0 +1,102 @@
+<head>
+<link rel="stylesheet" href="topmenu.css">
+<style>
+body{
+	background:radial-gradient(#fff 50%, #79a 80%, #fff 100%);
+	padding:0;
+	margin:0;
+}
+#mainBorder{
+	position:absolute;
+	top:40px;
+	left:4%;
+	width:calc(92% - 10px);
+	border:5px solid transparent;
+	border-image:url(images/titleborder2.png) 5 round;
+	background:transparent;
+}
+#mainTxt{
+	padding:1%;
+	width:98%;
+	background:#fff;
+	font-family: Tahoma;
+	text-align:left;
+}
+#titleTxt{
+	margin-left:5%;
+	width:90%;
+	background-image:url(images/sodalakepixabay.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size:cover;
+	text-align:center;
+	font-size:69px;
+	padding-bottom:5px;
+	font-family:georgia;
+	color:#fff;
+	text-shadow:-1px -1px#000,-1px 1px#000,1px -1px#000,1px 1px#000;
+}
+#vPS{
+	color:#2a2;
+	text-decoration: underline;
+	display:inline-block;
+	cursor:pointer;
+}
+#parenth{
+	font-size:12px;
+	display:inline-block;
+}
+</style>
+</head>
+<body>
+<div id='topMenuQueen'><div id='topMenuWrap'></div></div>
+<div id='mainBorder'>
+	<div id='mainTxt'>
+		<div id='titleTxt'>Codes and Programs</div>
+		<br>
+		<br>
+		The aim of this website is to showcase projects I made while learning HTML, CSS and Javascript.
+		Feel free to message me on <a href="https://www.reddit.com/user/codepr0/" target="_blank">reddit</a> with thoughts and suggestions, 
+		view the <div id='vPS'>page source</div><div id='parenth'>&nbsp;</div>to examine the code.
+		<div id='pSTxt' style='word-wrap:break-word'></div>
+		<br>
+		You can find the projects using the menu at the top or the links here.
+		<div id='projectList' style='word-wrap:break-word'></div>
+	</div>
+</div>
+</body>
+<script src="fader.js"></script>
+<script>
+var vPSDiv=document.getElementById("vPS")
+vPSDiv.addEventListener("mouseover",function(){pageSource(0)})
+vPSDiv.addEventListener("mouseout",function(){pageSource(1)})
+vPSDiv.addEventListener("click",function(){pageSource()})
+var pSClkd=0
+function pageSource(z){parenth
+	if(z===0){document.getElementById('parenth').innerHTML='&nbsp;(click this, right click→View Page Source, ctrl+U for PC browsers)&nbsp;'}
+	else if(z===1){document.getElementById('parenth').innerHTML='&nbsp;'}
+	else{
+		if(!pSClkd){
+			var a=document.getElementsByTagName('html')[0].innerHTML
+			a=a.replace(/&/g,'&amp;')
+			a=a.replace(/</g,'&lt;')
+			a=a.replace(/>/g,'&gt;')
+			a='<pre style="white-space: pre-wrap">'+a+'</pre><div id="vPS" onclick="pageSource(2)">close page source</div>'
+			document.getElementById('pSTxt').innerHTML=a
+			pSClkd=1
+		}
+		else{
+			document.getElementById('pSTxt').innerHTML=""
+			pSClkd=0
+		}
+	}
+}
+for (x=0;x<menuList.length;x++){
+	for (y=1;y<menuList[x].length;y++){
+		document.getElementById('projectList').innerHTML+='<a href="'+menuList[x][y][1]+'.html">'+menuList[x][y][0]+'</a><br>'
+	}
+}
+</script>
+
+
+

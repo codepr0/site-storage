@@ -1,0 +1,267 @@
+<style>
+.btn1{
+    height: 100px;
+    width: 100px;
+	font-size: 80px;
+	text-align: center;
+	display: block;
+	float: left;
+}
+#plaza{text-align:left}
+</style>
+<head>
+<link rel="stylesheet" href="topmenu.css">
+</head>
+<div id='topMenuQueen'><div id='topMenuWrap'></div></div>
+<div id='plaza'>
+<!-- 3x3 buttons -->
+
+<input class="btn1" onclick="click1(0)" type="button" value=" " id="button0"></input>
+<input class="btn1" onclick="click1(1)" type="button" value=" " id="button1"></input>
+<input class="btn1" onclick="click1(2)" type="button" value=" " id="button2"></input>
+<!-- trick to eliminate spaces between buttons -->
+<hr style="height:90px; visibility:hidden;" />
+<input class="btn1" onclick="click1(3)" type="button" value=" " id="button3"> </input>
+<input class="btn1" onclick="click1(4)" type="button" value=" " id="button4"> </input>
+<input class="btn1" onclick="click1(5)" type="button" value=" " id="button5"> </input>
+<hr style="height:90px; visibility:hidden;" />
+<input class="btn1" onclick="click1(6)" type="button" value=" " id="button6"> </input>
+<input class="btn1" onclick="click1(7)" type="button" value=" " id="button7"> </input>
+<input class="btn1" onclick="click1(8)" type="button" value=" " id="button8"> </input>
+<hr style="height:90px; visibility:hidden;" />
+
+<p id="lossAndDrawCount"></p>
+<p id="loseOrDrawText"></p>
+</div>
+<script src="fader.js"></script>
+<script>
+//tile list with short name (t), updated every move//
+var t = new Object();
+for (c = 0; c <= 8; c++) {
+	t["b"+c] = document.getElementById("button"+c).value
+}
+//User move counter. When AI moves, moveC++ ends turn.//
+var moveC = 1
+//list of lines of 3 (LO3)//
+var LO3={
+	//horizontal//
+	a: [0, 1, 2],
+	b: [3, 4, 5],
+	c: [6, 7, 8],
+	//vertical//
+	d: [0, 3, 6],
+	e: [1, 4, 7],
+	f: [2, 5, 8],
+	//diagonal//
+	g: [0, 4, 8],
+	h: [2, 4, 6]
+}
+//function for AI to click free space in a LO3 with 1 " " and 2 "X"s or 2 "O"s//
+function freeSpace(v){
+	for (var x in LO3){
+		//count values in line of 3//
+		var VCount=0;
+		var FCount=0;
+		for (y=0; y<=2; y++){
+			if (t["b"+LO3[x][y]] === v){
+				VCount++
+			}
+			if (t["b"+LO3[x][y]] === " "){
+				FCount++
+			}
+		}
+		//if there are 2 v and 1 " ", fill " " with "O", end turn then break out of loop//
+		if (VCount===2&&FCount===1){
+			for (z=0; z<=2; z++){
+				if (t["b"+LO3[x][z]] === " "){
+					document.getElementById("button"+LO3[x][z]).value = "O";
+					t["b"+LO3[x][z]]="O"
+				}
+			}
+			moveC++
+			break;
+}}}
+//loss and draw count//
+var lossCount = 0
+var drawCount = 0
+//function to see if AI has won and if so end game//
+//first "if" statement in click1 only works when gameNotOver is true//
+var gameNotOver = 1;
+function AIWon(){
+	//check each LO3 for 3 "O"s//
+	for (var u in LO3){
+		var OCount=0;
+		for (s=0; s<=2; s++){
+			if (t["b"+LO3[u][s]] === "O"){
+				OCount++
+			}
+		}
+		//if there are 3 "O"s, set gameNotOver to false, play win message then break loop//
+		if (OCount===3){
+			gameNotOver = 0;
+			document.getElementById("loseOrDrawText").innerHTML = "GAME OVER";
+			lossCount++
+			document.getElementById("lossAndDrawCount").innerHTML = "Won: 0, Drew: "+drawCount+", Lost: "+lossCount
+			break;
+}}}
+//marker for cornerScript, if user clicks corner on move 1, AI will try opposite corner on move 2//
+cornerScript=0;
+//marker for edgeScript, is user clicks edge on move 1, AI will click an empty corner//
+edgeScript=0;
+
+
+//user click1 function ("click" is not a valid name hence "click1")//
+function click1(position){
+//if space is free, fill with "X", note: this "if" statement ends at the end of click1//
+if (t["b"+position] === " " && gameNotOver){
+document.getElementById("button"+position).value = "X";
+t["b"+position] = "X"
+//if all 9 tiles are full (moveC=5), display draw message//
+if (moveC===5){
+	document.getElementById("loseOrDrawText").innerHTML = "Draw"
+	drawCount++
+	document.getElementById("lossAndDrawCount").innerHTML = "Won: 0, Drew: "+drawCount+", Lost: "+lossCount
+	gameNotOver=0
+}
+//statements are skipped if currentMove!=moveC//
+var currentMove = moveC
+
+//if user clicks corner on move 1, mark cornerScript, cornerScript will be used if freeSpace("X") is not used on move 2//
+if (moveC===1&&(position===0||position===2||position===6||position===8)){
+	//position recorded, all values greater than 0 are considered true so 1 is added//
+	cornerScript=position+1
+}
+//if user clicks edge (1,3,5,7), mark edgeScript, cornerScript will be used if freeSpace("X") is not used on move 2//
+if (moveC===1&&(position===1||position===3||position===5||position===7)){
+	edgeScript=position
+}
+//move 1//
+if (moveC===1){
+	//if user clicks middle, AI clicks top left//
+	if (position===4){
+		document.getElementById("button0").value = "O";
+		t.b0 = "O";
+	}
+	//if not, AI clicks middle//
+	else{
+		document.getElementById("button4").value = "O";
+		t.b4 = "O";
+	}
+	moveC++
+}
+//move 2, if 4="X", 0="O", 8="X" then 1="O"//
+if (moveC===2){
+	if (t.b4==="X"&&t.b8==="X"){
+		document.getElementById("button2").value = "O";
+		t.b2 = "O";
+		moveC++
+	}
+}
+//if possible make a line of 3 Os//
+if (currentMove === moveC){
+	freeSpace("O");
+	AIWon();
+}
+//block line of 3 with 2 Xs and 1 " "//
+if (currentMove === moveC){
+	freeSpace("X")
+}
+//move 2 for cornerScript, if move2 and no "X" in opposite corner, "O" in opposite corner//
+if(currentMove===2&&moveC===2&&cornerScript){
+	var oppositeCorner
+	if(cornerScript===1){oppositeCorner=8}
+	if(cornerScript===3){oppositeCorner=6}
+	if(cornerScript===7){oppositeCorner=2}
+	if(cornerScript===9){oppositeCorner=0}
+	if(t["b"+oppositeCorner]===" "){
+		document.getElementById("button"+oppositeCorner).value = "O";
+		t["b"+oppositeCorner] = "O";
+		moveC++
+	}
+}
+//move 2 for edgeScript, AI clicks 1 adjacent corner//
+if(currentMove===2&&moveC===2&&edgeScript){
+	var AIClick
+	if (edgeScript===1||edgeScript===7){
+		AIClick=edgeScript-1
+	}
+	if (edgeScript===3||edgeScript===5){
+		AIClick=edgeScript-3
+	}
+	document.getElementById("button"+AIClick).value = "O";
+	t["b"+AIClick] = "O";
+	moveC++
+}
+//place "O" in random free space//
+if (currentMove === moveC){
+	//array to list free spaces//
+	var p = [];
+	//cycle through tiles, add free spaces to list//
+	var FSCount=0
+	for (r=0; r<9; r++){
+		if (t["b"+r]===" "){
+			p[FSCount]=r
+			FSCount++
+		}
+	}
+	//if there are free tiles//
+	if (FSCount!=0){
+		//choose random tile in free space list//
+		var n = p[Math.floor(Math.random()*(FSCount))]
+		//AI clicks this tile, tile list updated, moveC++//
+		document.getElementById("button"+n).value = "O";
+		t["b"+n] = "O";
+		moveC++
+	}
+}
+
+//end of "if space is free" statement//
+}
+else if(gameNotOver===0){
+	reset1();
+}
+//end of click1 function//
+}
+
+//reset button, all counters, switches, text and buttons reset//
+function reset1(){
+	for (d = 0; d <= 8; d++) {
+		document.getElementById("button"+d).value = " ";
+		t["b"+d] = " ";
+	}
+	moveC=1;
+	gameNotOver=1;
+	cornerScript=0;
+	edgeScript=0;
+	document.getElementById("loseOrDrawText").innerHTML = " ";
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
