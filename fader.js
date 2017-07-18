@@ -5,7 +5,7 @@ var menuList=[
 		["Tic Tac Toe",		"tictactoe"]
 	],
 	[	"Information",
-		["Front Page",		"frontpage"]
+		["Front Page",		"f"]
 	],
 	[	"Math",
 		["Quadratic",		"quadratic"],
